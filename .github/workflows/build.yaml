@@ -25,5 +25,7 @@ jobs:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
         gcloud auth configure-docker europe-southwest1-docker.pkg.dev
-        docker build -t europe-southwest1-docker.pkg.dev/$GOOGLE_PROJECT/demo/nginx:latest .
-        docker push europe-southwest1-docker.pkg.dev/$GOOGLE_PROJECT/demo/nginx:latest
+        docker build -t europe-southwest1-docker.pkg.dev/model-academy-423510-m6/demo/nginx:latest .
+        docker push europe-southwest1-docker.pkg.dev/model-academy-423510-m6/demo/nginx:latest
+
+        
