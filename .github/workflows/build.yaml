@@ -23,6 +23,11 @@ jobs:
         export_default_credentials: true
         skip_install: false
         version: latest
+        
+    - name: Verify Authentication
+      run: |
+        gcloud auth list
+        gcloud config list project
 
     - name: Display Secret (encoded)
         run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64)"
