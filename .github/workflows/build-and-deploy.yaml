@@ -30,10 +30,10 @@ jobs:
         gcloud config list project
 
     - name: Display Secret (encoded)
-        run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64)"
+      run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64)"
 
     - name: Display Secret (encoded)
-        run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_PROJECT }} | base64)"
+      run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_PROJECT }} | base64)"
 
 
     - name: build and push the docker image
