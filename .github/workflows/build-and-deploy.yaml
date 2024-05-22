@@ -16,24 +16,17 @@ jobs:
     - name: install the gcloud cli
       uses: google-github-actions/setup-gcloud@v1
       with:
-        project_id: ${{ secrets.GOOGLE_PROJECT }}
-        service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-        install_components: gke-gcloud-auth-plugin
-        export_default_credentials: true
-        skip_install: false
         version: latest
-        
-    - name: Verify Authentication
+        project_id: ${{ secrets.GOOGLE_PROJECT }}
+       
+ 
+    - name: Authenticate to GCP
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
       run: |
-        gcloud auth list
-        gcloud config list project
-
-    - name: Display Secret (encoded)
-      run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64)"
-
-    - name: Display Secret (encoded)
-      run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_PROJECT }} | base64)"
+        echo "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" > "${HOME}/gcloud-key.json"
+        gcloud auth activate-service-account --key-file="${HOME}/gcloud-key.json"
+        gcloud config set project ${{ secrets.GOOGLE_PROJECT }}
 
 
     - name: build and push the docker image
