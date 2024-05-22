@@ -18,7 +18,11 @@ jobs:
       with:
         project_id: ${{ secrets.GOOGLE_PROJECT }}
         service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+        install_components: gke-gcloud-auth-plugin
         export_default_credentials: true
+        skip_install: false
+        version: latest
 
     - name: Display Secret (encoded)
         run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64)"
