@@ -18,21 +18,30 @@ jobs:
       with:
         project_id: ${{ secrets.GOOGLE_PROJECT }}
         service_account_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-        install_components: 'gke-gcloud-auth-plugin'
-        export_default_credentials: true
 
-    - name: build and push the docker images
+        install_components: gke-gcloud-auth-plugin
+        export_default_credentials: true
+        skip_install: false
+        version: latest
+        
+    - name: Verify Authentication
+      run: |
+        gcloud auth list
+        gcloud config list project
+
+    - name: Display Secret (encoded)
+        run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }} | base64)"
+
+    - name: Display Secret (encoded)
+        run: echo "SECRET_VALUE=$(echo${{ secrets.GOOGLE_PROJECT }} | base64)"
+
+
+    - name: build and push the docker image
       env:
         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
       run: |
         gcloud auth configure-docker europe-southwest1-docker.pkg.dev
-        docker build -t europe-southwest1-docker.pkg.dev/$GOOGLE_PROJECT/demo/nginx:latest .
-        docker push europe-southwest1-docker.pkg.dev/$GOOGLE_PROJECT/demo/nginx:latest
+        docker build -t europe-southwest1-docker.pkg.dev/model-academy-423510-m6/demo/nginx:latest .
+        docker push europe-southwest1-docker.pkg.dev/model-academy-423510-m6/demo/nginx:latest
 
-    - name: deploy to gke
-      env:
-        GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-      run: |
-        gcloud container clusters get-credentials autopilot-cluster-1 --region europe-southwest1
-        sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" resources.yaml
-        kubectl apply -f resources.yaml
+        
